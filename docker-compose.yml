@@ -1,0 +1,42 @@
+
+services:
+  postgres:
+    image: postgres:16
+    container_name: postgres
+    restart: always
+    environment:
+      POSTGRES_USER: dental
+      POSTGRES_PASSWORD: dental123
+      POSTGRES_DB: dentaldb
+    ports:
+      - "5432:5432"
+    volumes:
+      - postgres_data:/var/lib/postgresql/data
+
+  backend:
+    build: ./backend
+    container_name: backend
+    restart: always
+    environment:
+      DATABASE_URL: postgres://dental:dental123@postgres:5432/dentaldb
+      TELEGRAM_TOKEN: your_telegram_token
+      TELEGRAM_ADMIN_ID: your_chat_id
+      NODE_ENV: development
+    depends_on:
+      - postgres
+    ports:
+      - "9000:9000"
+
+  frontend:
+    build: ./frontend
+    container_name: frontend
+    restart: always
+    environment:
+      NEXT_PUBLIC_BACKEND_URL: http://backend:9000
+    ports:
+      - "3000:3000"
+    depends_on:
+      - backend
+
+volumes:
+  postgres_data:
