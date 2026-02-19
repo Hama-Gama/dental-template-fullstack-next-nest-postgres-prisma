@@ -18,7 +18,7 @@ services:
     container_name: backend
     restart: always
     environment:
-      DATABASE_URL: postgres://dental:dental123@postgres:5432/dentaldb
+      DATABASE_URL: postgres://dental:dental123@localhost:5432/dentaldb
       TELEGRAM_TOKEN: your_telegram_token
       TELEGRAM_ADMIN_ID: your_chat_id
       NODE_ENV: development
